@@ -1,0 +1,56 @@
+﻿<Window x:Class="Examen.GiveQuery"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Examen"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+		MinHeight="470"
+		MinWidth="380"
+		Title="GiveQuery" Height="463.314" Width="378.402">
+	<Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="1*"/>
+			<RowDefinition Height="1*"/>
+			<RowDefinition Height="1*"/>
+			<RowDefinition Height="1*"/>
+			<RowDefinition Height="1*"/>
+			<RowDefinition Height="1*"/>
+			<RowDefinition Height="0.5*"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Label Content="Фамилия" Margin="0 5"/>
+		<TextBox x:Name="fam"  Margin="0 5" MinWidth="170" Grid.Column="1"/>
+
+		<Label Content="Имя" Grid.Row="1" Margin="0 5"/>
+		<TextBox x:Name="nam"  Margin="0 5" MinWidth="170" Grid.Row="1" Grid.Column="1"/>
+
+		<Label Content="Отчество" Grid.Row="2" Margin="0 5"/>
+		<TextBox x:Name="otc"  Margin="0 5" MinWidth="170" Grid.Row="2" Grid.Column="1"/>
+
+		<Label Content="Выберите:" Grid.Row="3" Margin="0 5"/>
+		<StackPanel Grid.Column="1" Grid.Row="3">
+			<RadioButton x:Name="sot" IsChecked="True" Content="Сотрудник"/>
+			<RadioButton  Content="Студент"/>
+		</StackPanel>
+
+		<Label Content="Дата заселения" Grid.Row="4" Margin="0 5"/>
+		<DatePicker Grid.Row="4" Grid.Column="1" x:Name="dz"/>
+
+		<Label Content="Дата выезда" Grid.Row="5" Margin="0 5"/>
+		<DatePicker Grid.Row="5" Grid.Column="1" x:Name="dv"/>
+
+		<Viewbox Grid.Row="6" Grid.Column="1">
+			<Label Name="Error" Content=""/>
+		</Viewbox>
+
+		<StackPanel Orientation="Horizontal" Grid.Row="7" HorizontalAlignment="Right" VerticalAlignment="Center">
+			<Button Content="Отправить" Click="Send_Click" Margin="5" Padding="3"/>
+			<Button Content="Закрыть" Click="Close_click" Margin="5" Padding="3"/>
+		</StackPanel>
+	</Grid>
+</Window>

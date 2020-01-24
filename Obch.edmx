@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="obshagaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="korpus">
+          <Key>
+            <PropertyRef Name="id_korpus" />
+          </Key>
+          <Property Name="id_korpus" Type="int" Nullable="false" />
+          <Property Name="count_komnats" Type="int" />
+        </EntityType>
+        <EntityType Name="living">
+          <Key>
+            <PropertyRef Name="id_projivajushie" />
+          </Key>
+          <Property Name="id_projivajushie" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="familia" Type="varchar" MaxLength="50" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="otchestvo" Type="varchar" MaxLength="50" />
+          <Property Name="sotrudnik_student" Type="nvarchar" MaxLength="50" />
+          <Property Name="data_zaselenia" Type="nvarchar" MaxLength="50" />
+          <Property Name="data_vyuezda" Type="nvarchar" MaxLength="50" />
+          <Property Name="id_komnats" Type="int" />
+          <Property Name="id_user" Type="int" />
+        </EntityType>
+        <EntityType Name="room">
+          <Key>
+            <PropertyRef Name="id_komnats" />
+          </Key>
+          <Property Name="id_komnats" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="count_mest" Type="int" />
+          <Property Name="nomer_komnat" Type="int" />
+          <Property Name="id_korpus" Type="int" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="login" Type="nvarchar" MaxLength="50" />
+          <Property Name="pass" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_komnats_korpus">
+          <End Role="korpus" Type="Self.korpus" Multiplicity="0..1" />
+          <End Role="room" Type="Self.room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="korpus">
+              <PropertyRef Name="id_korpus" />
+            </Principal>
+            <Dependent Role="room">
+              <PropertyRef Name="id_korpus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_projivajushie_komnats">
+          <End Role="room" Type="Self.room" Multiplicity="0..1" />
+          <End Role="living" Type="Self.living" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="room">
+              <PropertyRef Name="id_komnats" />
+            </Principal>
+            <Dependent Role="living">
+              <PropertyRef Name="id_komnats" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_projivajushie_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="living" Type="Self.living" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="living">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="obshagaModelStoreContainer">
+          <EntitySet Name="korpus" EntityType="Self.korpus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="living" EntityType="Self.living" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="room" EntityType="Self.room" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_komnats_korpus" Association="Self.FK_komnats_korpus">
+            <End Role="korpus" EntitySet="korpus" />
+            <End Role="room" EntitySet="room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_projivajushie_komnats" Association="Self.FK_projivajushie_komnats">
+            <End Role="room" EntitySet="room" />
+            <End Role="living" EntitySet="living" />
+          </AssociationSet>
+          <AssociationSet Name="FK_projivajushie_User" Association="Self.FK_projivajushie_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="living" EntitySet="living" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="obshagaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="korpu">
+          <Key>
+            <PropertyRef Name="id_korpus" />
+          </Key>
+          <Property Name="id_korpus" Type="Int32" Nullable="false" />
+          <Property Name="count_komnats" Type="Int32" />
+          <NavigationProperty Name="rooms" Relationship="Self.FK_komnats_korpus" FromRole="korpus" ToRole="room" />
+        </EntityType>
+        <EntityType Name="living">
+          <Key>
+            <PropertyRef Name="id_projivajushie" />
+          </Key>
+          <Property Name="id_projivajushie" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="familia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="otchestvo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sotrudnik_student" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="data_zaselenia" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="data_vyuezda" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="id_komnats" Type="Int32" />
+          <Property Name="id_user" Type="Int32" />
+          <NavigationProperty Name="room" Relationship="Self.FK_projivajushie_komnats" FromRole="living" ToRole="room" />
+          <NavigationProperty Name="User" Relationship="Self.FK_projivajushie_User" FromRole="living" ToRole="User" />
+        </EntityType>
+        <EntityType Name="room">
+          <Key>
+            <PropertyRef Name="id_komnats" />
+          </Key>
+          <Property Name="id_komnats" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="count_mest" Type="Int32" />
+          <Property Name="nomer_komnat" Type="Int32" />
+          <Property Name="id_korpus" Type="Int32" />
+          <NavigationProperty Name="korpu" Relationship="Self.FK_komnats_korpus" FromRole="room" ToRole="korpus" />
+          <NavigationProperty Name="livings" Relationship="Self.FK_projivajushie_komnats" FromRole="room" ToRole="living" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="pass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="livings" Relationship="Self.FK_projivajushie_User" FromRole="User" ToRole="living" />
+        </EntityType>
+        <Association Name="FK_komnats_korpus">
+          <End Role="korpus" Type="Self.korpu" Multiplicity="0..1" />
+          <End Role="room" Type="Self.room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="korpus">
+              <PropertyRef Name="id_korpus" />
+            </Principal>
+            <Dependent Role="room">
+              <PropertyRef Name="id_korpus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_projivajushie_komnats">
+          <End Role="room" Type="Self.room" Multiplicity="0..1" />
+          <End Role="living" Type="Self.living" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="room">
+              <PropertyRef Name="id_komnats" />
+            </Principal>
+            <Dependent Role="living">
+              <PropertyRef Name="id_komnats" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_projivajushie_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="living" Type="Self.living" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="living">
+              <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="obshagaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="korpus" EntityType="Self.korpu" />
+          <EntitySet Name="livings" EntityType="Self.living" />
+          <EntitySet Name="rooms" EntityType="Self.room" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_komnats_korpus" Association="Self.FK_komnats_korpus">
+            <End Role="korpus" EntitySet="korpus" />
+            <End Role="room" EntitySet="rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_projivajushie_komnats" Association="Self.FK_projivajushie_komnats">
+            <End Role="room" EntitySet="rooms" />
+            <End Role="living" EntitySet="livings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_projivajushie_User" Association="Self.FK_projivajushie_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="living" EntitySet="livings" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="obshagaModelStoreContainer" CdmEntityContainer="obshagaEntities">
+          <EntitySetMapping Name="korpus">
+            <EntityTypeMapping TypeName="obshagaModel.korpu">
+              <MappingFragment StoreEntitySet="korpus">
+                <ScalarProperty Name="id_korpus" ColumnName="id_korpus" />
+                <ScalarProperty Name="count_komnats" ColumnName="count_komnats" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="livings">
+            <EntityTypeMapping TypeName="obshagaModel.living">
+              <MappingFragment StoreEntitySet="living">
+                <ScalarProperty Name="id_projivajushie" ColumnName="id_projivajushie" />
+                <ScalarProperty Name="familia" ColumnName="familia" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="otchestvo" ColumnName="otchestvo" />
+                <ScalarProperty Name="sotrudnik_student" ColumnName="sotrudnik_student" />
+                <ScalarProperty Name="data_zaselenia" ColumnName="data_zaselenia" />
+                <ScalarProperty Name="data_vyuezda" ColumnName="data_vyuezda" />
+                <ScalarProperty Name="id_komnats" ColumnName="id_komnats" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rooms">
+            <EntityTypeMapping TypeName="obshagaModel.room">
+              <MappingFragment StoreEntitySet="room">
+                <ScalarProperty Name="id_komnats" ColumnName="id_komnats" />
+                <ScalarProperty Name="count_mest" ColumnName="count_mest" />
+                <ScalarProperty Name="nomer_komnat" ColumnName="nomer_komnat" />
+                <ScalarProperty Name="id_korpus" ColumnName="id_korpus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="obshagaModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="pass" ColumnName="pass" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
